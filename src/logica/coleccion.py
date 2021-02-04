@@ -156,7 +156,9 @@ class Coleccion():
         return canciones
 
     def buscar_canciones_por_interprete(self, interprete_nombre):
-        return None
+        if interprete_nombre == "":
+            canciones = session.query(Cancion).all()
+            return canciones
     
     def asociar_cancion(self, cancion_id, album_id):
         cancion = session.query(Cancion).filter(Cancion.id == cancion_id).first()
