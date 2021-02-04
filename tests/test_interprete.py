@@ -1,6 +1,7 @@
 import unittest
 
 from src.logica.coleccion import Coleccion
+from src.modelo.cancion import Cancion
 from src.modelo.declarative_base import Session
 from src.modelo.interprete import Interprete
 
@@ -27,3 +28,8 @@ class InterpreteTestCase(unittest.TestCase):
         self.coleccion.eliminar_interprete(3)
         self.consulta = self.session.query(Interprete).filter(Interprete.id == 3).first()
         self.assertIsNone(self.consulta)
+
+    def test_buscar_sin_parametros(self):
+        self.consulta1 = self.session.query(Cancion).all()
+        self.consulta2 = self.coleccion.buscar_canciones_por_interprete("")
+        self.assertEqual(len(self.consulta1), len(self.consulta2))
