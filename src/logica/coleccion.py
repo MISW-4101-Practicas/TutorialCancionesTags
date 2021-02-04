@@ -27,7 +27,25 @@ class Coleccion():
         return None
 
     def editar_cancion(self, cancion_id, titulo, minutos, segundos, compositor, interpretes):
-        return None
+        busqueda = session.query(Cancion).filter(Cancion.titulo == titulo, Cancion.id != cancion_id).all()
+        if len(busqueda) == 0:
+            cancion = session.query(Cancion).filter(Cancion.id == cancion_id).first()
+            cancion.titulo = titulo
+            cancion.minutos = minutos
+            cancion.segundos = segundos
+            cancion.compositor = compositor
+            for item in interpretes:
+                if item["id"] == "n":
+                    interprete = Interprete(nombre=item["nombre"], texto_curiosidades=item["texto_curiosidades"],
+                                            cancion=cancion.id)
+                    session.add(interprete)
+                    cancion.interpretes.append(interprete)
+                else:
+                    self.editar_interprete(item["id"], item["nombre"], item["texto_curiosidades"])
+            session.commit()
+            return True
+        else:
+            return False
 
     def eliminar_cancion(self, cancion_id):
         return None

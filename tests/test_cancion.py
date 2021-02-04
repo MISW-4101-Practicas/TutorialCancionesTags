@@ -50,3 +50,13 @@ class CancionTestCase(unittest.TestCase):
             self.session.commit()
         consulta = self.coleccion.buscar_canciones_por_titulo("Expr")
         self.assertEqual(len(consulta), 1)
+
+    def test_editar_cancion(self):
+        cancion = self.session.query(Cancion).filter(Cancion.titulo == "Express Yourself").first()
+        interprete = self.session.query(Interprete).filter(Interprete.nombre == "Madona").first()
+        if cancion is not None:
+            self.coleccion.editar_cancion(cancion.id, "Express Yourself", 2, 54, "Patrick Leonard y otros",
+                                          [{'id': interprete.id, 'nombre': 'Madona',
+                                            'texto_curiosidades': 'Publicado por la compañía discográfica Sire Records'}])
+            consulta = self.session.query(Cancion).filter(Cancion.compositor == "Patrick Leonard y otros").first()
+            self.assertIsNotNone(consulta)
