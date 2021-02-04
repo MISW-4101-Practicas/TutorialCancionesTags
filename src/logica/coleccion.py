@@ -62,7 +62,9 @@ class Coleccion():
         return session.query(Album).get(album_id).__dict__
 
     def buscar_albumes_por_titulo(self, album_titulo):
-        return None
+        albumes = [elem.__dict__ for elem in
+                   session.query(Album).filter(Album.titulo.ilike('%{0}%'.format(album_titulo))).all()]
+        return albumes
 
     def editar_cancion(self, cancion_id, titulo, minutos, segundos, compositor, interpretes):
         busqueda = session.query(Cancion).filter(Cancion.titulo == titulo, Cancion.id != cancion_id).all()

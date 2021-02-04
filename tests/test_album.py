@@ -41,3 +41,9 @@ class AlbumTestCase(unittest.TestCase):
         album_id = self.session.query(Album).filter(Album.titulo == "Infinito arcoiris").first().id
         consulta = self.coleccion.dar_album_por_id(album_id)["titulo"]
         self.assertEqual(consulta, "Infinito arcoiris")
+
+    def test_buscar_albumes_por_titulo(self):
+        consulta1 = self.coleccion.buscar_albumes_por_titulo("clara luna")
+        self.coleccion.agregar_album("Clara luna-Instrumental", 1992, "Sin descripción", "CD")
+        consulta2 = self.coleccion.buscar_albumes_por_titulo("clara luna")
+        self.assertLessEqual(len(consulta1), len(consulta2))
