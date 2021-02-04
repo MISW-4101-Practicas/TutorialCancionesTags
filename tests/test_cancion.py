@@ -31,3 +31,22 @@ class CancionTestCase(unittest.TestCase):
         else:
             consulta = self.coleccion.dar_cancion_por_id(cancion.id)
         self.assertIsNotNone(consulta)
+
+    def test_buscar_canciones_por_titulo(self):
+        cancion = self.session.query(Cancion).filter(Cancion.titulo == "Express Yourself").first()
+        if cancion is None:
+            nuevo_album = Album(titulo="Like a Prayer", ano=1989, descripcion="Sin descripción", medio="CASETE")
+            nuevo_interprete = Interprete(nombre="Madona",
+                                          texto_curiosidades="Publicado por la compañía discográfica Sire Records",
+                                          cancion=-1)
+            nueva_cancion = Cancion(titulo="Express Yourself", minutos=4, segundos=39,
+                                    compositor="Stephen Bray y otros",
+                                    albumes=[nuevo_album])
+            nueva_cancion.interpretes.append(nuevo_interprete)
+            nuevo_interprete.cancion = nueva_cancion.id
+            self.session.add(nuevo_album)
+            self.session.add(nuevo_interprete)
+            self.session.add(nueva_cancion)
+            self.session.commit()
+        consulta = self.coleccion.buscar_canciones_por_titulo("Expr")
+        self.assertEqual(len(consulta), 1)

@@ -45,7 +45,9 @@ class Coleccion():
         return []
 
     def buscar_canciones_por_titulo(self, cancion_titulo):
-        return None
+        canciones = [elem.__dict__ for elem in
+                     session.query(Cancion).filter(Cancion.titulo.ilike('%{0}%'.format(cancion_titulo))).all()]
+        return canciones
 
     def agregar_interprete(self, nombre, texto_curiosidades, cancion_id):
         return None
