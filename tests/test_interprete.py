@@ -33,3 +33,13 @@ class InterpreteTestCase(unittest.TestCase):
         self.consulta1 = self.session.query(Cancion).all()
         self.consulta2 = self.coleccion.buscar_canciones_por_interprete("")
         self.assertEqual(len(self.consulta1), len(self.consulta2))
+
+    def test_buscar_coincidencia_exacta(self):
+        consulta1 = self.session.query(Interprete).filter(Interprete.nombre == "Jorge Celedón").first()
+        if consulta1 is None:
+            self.coleccion.agregar_interprete("Jorge Celedón", "Primera canción vallenata...", -1)
+            self.coleccion.agregar_cancion("Tan natural", 2, 53, "Manuel Julian", -1,
+                                           [{'id': 'n', 'nombre': 'Jorge Celedón',
+                                             'texto_curiosidades': 'Primera canción vallenata...'}])
+        consulta2 = self.coleccion.buscar_canciones_por_interprete("Jorge Celedón")
+        self.assertEqual(len(consulta2), 1)
