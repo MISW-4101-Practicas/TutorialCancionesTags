@@ -22,3 +22,8 @@ class InterpreteTestCase(unittest.TestCase):
         consulta2 = self.coleccion.editar_interprete(consulta1, "Lady Gaga",
                                                      "Los trajes usados fueron elaborados...")
         self.assertTrue(consulta2)
+
+    def testEliminarInterprete(self):
+        self.coleccion.eliminar_interprete(3)
+        self.consulta = self.session.query(Interprete).filter(Interprete.id == 3).first()
+        self.assertIsNone(self.consulta)

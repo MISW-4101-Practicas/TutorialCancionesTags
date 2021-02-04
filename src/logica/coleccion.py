@@ -155,4 +155,19 @@ class Coleccion():
             return False
 
     def eliminar_interprete(self, interprete_id):
-        return None
+        try:
+            interprete = session.query(Interprete).filter(Interprete.id == interprete_id).first()
+            session.delete(interprete)
+            session.commit()
+            return True
+        except:
+            return False
+
+    def dar_interpretes(self):
+        interpretes = [elem.__dict__ for elem in session.query(Interprete).all()]
+        return interpretes
+
+    def buscar_interpretes_por_nombre(self, interprete_nombre):
+        interpretes = [elem.__dict__ for elem in session.query(Interprete).filter(
+            Interprete.nombre.ilike('%{0}%'.format(interprete_nombre))).all()]
+        return interpretes
