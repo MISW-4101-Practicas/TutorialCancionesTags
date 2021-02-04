@@ -1,4 +1,6 @@
-from src.modelo.declarative_base import engine, Base
+from src.modelo.cancion import Cancion
+from src.modelo.declarative_base import engine, Base, session
+from src.modelo.interprete import Interprete
 
 
 class Coleccion():
@@ -31,7 +33,13 @@ class Coleccion():
         return None
 
     def dar_cancion_por_id(self, cancion_id):
-        return None
+        cancion = session.query(Cancion).filter_by(id=cancion_id).first()
+        cancion_dict = cancion.__dict__
+        cancion_dict["interpretes"] = [self.dar_interprete_por_id(interprete.id) for interprete in cancion.interpretes]
+        return cancion_dict
+
+    def dar_interprete_por_id(self, interprete_id):
+        return session.query(Interprete).filter_by(id=interprete_id).first().__dict__
 
     def dar_canciones_de_album(self, album_id):
         return []
