@@ -144,7 +144,15 @@ class Coleccion():
             return False
 
     def editar_interprete(self, interprete_id, nombre, texto_curiosidades):
-        return None
+        busqueda = session.query(Interprete).filter(Interprete.id != interprete_id, Interprete.nombre == nombre).all()
+        if len(busqueda) == 0:
+            interprete = session.query(Interprete).filter(Interprete.id == interprete_id).first()
+            interprete.nombre = nombre
+            interprete.texto_curiosidades = texto_curiosidades
+            session.commit()
+            return True
+        else:
+            return False
 
     def eliminar_interprete(self, interprete_id):
         return None
