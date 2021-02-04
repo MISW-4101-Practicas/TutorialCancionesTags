@@ -72,18 +72,23 @@ class Coleccion():
             return False
         else:
             if album_id > 0:
-                album = session.query(Album).filter(Album.id == album_id).first()
-                nuevaCancion = Cancion(titulo=titulo, minutos=minutos, segundos=segundos, compositor=compositor,
-                                       albumes=[album])
-                for item in interpretes:
-                    interprete = Interprete(nombre=item["nombre"], texto_curiosidades=item["texto_curiosidades"],
-                                            cancion=nuevaCancion.id)
-                    session.add(interprete)
-                    interpretesCancion.append(interprete)
-                nuevaCancion.interpretes = interpretesCancion
-                session.add(nuevaCancion)
-                session.commit()
-                return True
+                busqueda = session.query(Cancion).filter(Cancion.albumes.any(Album.id.in_([album_id])),
+                                                         Cancion.titulo == titulo).all()
+                if len(busqueda) == 0:
+                    album = session.query(Album).filter(Album.id == album_id).first()
+                    nuevaCancion = Cancion(titulo=titulo, minutos=minutos, segundos=segundos, compositor=compositor,
+                                           albumes=[album])
+                    for item in interpretes:
+                        interprete = Interprete(nombre=item["nombre"], texto_curiosidades=item["texto_curiosidades"],
+                                                cancion=nuevaCancion.id)
+                        session.add(interprete)
+                        interpretesCancion.append(interprete)
+                    nuevaCancion.interpretes = interpretesCancion
+                    session.add(nuevaCancion)
+                    session.commit()
+                    return True
+                else:
+                    return False
             else:
                 nuevaCancion = Cancion(titulo=titulo, minutos=minutos, segundos=segundos, compositor=compositor)
                 for item in interpretes:
