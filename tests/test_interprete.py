@@ -1,5 +1,7 @@
 import unittest
 
+from faker import Faker
+
 from src.logica.coleccion import Coleccion
 from src.modelo.cancion import Cancion
 from src.modelo.declarative_base import Session
@@ -11,45 +13,63 @@ class InterpreteTestCase(unittest.TestCase):
     def setUp(self):
         self.session = Session()
         self.coleccion = Coleccion()
+        # Generación de datos con libreria Faker
+        self.data_factory = Faker()
 
     def testAgregarInterprete(self):
-        self.coleccion.agregar_interprete("Adele", "La artista tenia gripa...", -1)
-        consulta = self.session.query(Interprete).filter(Interprete.nombre == "Adele").first().nombre
-        self.assertEqual(consulta, "Adele")
+        nombre_interprete = self.data_factory.name()
+        texto_curiosidades = self.data_factory.text()
+        self.coleccion.agregar_interprete(nombre_interprete, texto_curiosidades, -1)
+        consulta = self.session.query(Interprete).filter(Interprete.nombre == nombre_interprete).first().nombre
+        self.assertEqual(consulta, nombre_interprete)
 
     def testEditarInterprete(self):
-        self.coleccion.agregar_interprete("Lady Gaga", "Los trajes usados...", -1)
-        consulta1 = self.session.query(Interprete).filter(Interprete.nombre == "Lady Gaga").first().id
-        consulta2 = self.coleccion.editar_interprete(consulta1, "Lady Gaga",
-                                                     "Los trajes usados fueron elaborados...")
+        nombre_interprete = self.data_factory.name()
+        texto_curiosidades = self.data_factory.text()
+        self.coleccion.agregar_interprete(nombre_interprete, texto_curiosidades, -1)
+        consulta1 = self.session.query(Interprete).filter(Interprete.nombre == nombre_interprete).first().id
+        consulta2 = self.coleccion.editar_interprete(consulta1, nombre_interprete, texto_curiosidades)
         self.assertTrue(consulta2)
 
     def testEliminarInterprete(self):
         self.coleccion.eliminar_interprete(3)
-        self.consulta = self.session.query(Interprete).filter(Interprete.id == 3).first()
-        self.assertIsNone(self.consulta)
+        consulta = self.session.query(Interprete).filter(Interprete.id == 3).first()
+        self.assertIsNone(consulta)
 
     def test_buscar_sin_parametros(self):
-        self.consulta1 = self.session.query(Cancion).all()
-        self.consulta2 = self.coleccion.buscar_canciones_por_interprete("")
-        self.assertEqual(len(self.consulta1), len(self.consulta2))
+        consulta1 = self.session.query(Cancion).all()
+        consulta2 = self.coleccion.buscar_canciones_por_interprete("")
+        self.assertEqual(len(consulta1), len(consulta2))
 
     def test_buscar_coincidencia_exacta(self):
         consulta1 = self.session.query(Interprete).filter(Interprete.nombre == "Jorge Celedón").first()
         if consulta1 is None:
-            self.coleccion.agregar_interprete("Jorge Celedón", "Primera canción vallenata...", -1)
-            self.coleccion.agregar_cancion("Tan natural", 2, 53, "Manuel Julian", -1,
-                                           [{'id': 'n', 'nombre': 'Jorge Celedón',
-                                             'texto_curiosidades': 'Primera canción vallenata...'}])
+            # Texto aleatorio
+            texto_curiosidades = self.data_factory.text()
+            self.coleccion.agregar_interprete("Jorge Celedón", texto_curiosidades, -1)
+            # Nombre aleatorio
+            titulo_cancion = self.data_factory.name()
+            # Número aleatorio entre 0 y 60
+            minutos_cancion = self.data_factory.pyint(0, 60)
+            segundos_cancion = self.data_factory.pyint(0, 60)
+            compositor_cancion = self.data_factory.name()
+            self.coleccion.agregar_cancion(titulo_cancion, minutos_cancion, segundos_cancion, compositor_cancion, -1,
+                                           [{'id': 'n', 'nombre': "Jorge Celedón",
+                                             'texto_curiosidades': texto_curiosidades}])
         consulta2 = self.coleccion.buscar_canciones_por_interprete("Jorge Celedón")
         self.assertEqual(len(consulta2), 1)
 
     def test_buscar_cualquier_coincidencia(self):
         consulta1 = self.session.query(Interprete).filter(Interprete.nombre == "Jorge Velosa").first()
         if consulta1 is None:
-            self.coleccion.agregar_interprete("Jorge Velosa", "Su canción fue escogida como...", -1)
-            self.coleccion.agregar_cancion("Entre chiste y chanza", 3, 12, "Desconocido", -1,
+            texto_curiosidades = self.data_factory.text()
+            self.coleccion.agregar_interprete("Jorge Velosa", texto_curiosidades, -1)
+            titulo_cancion = self.data_factory.name()
+            minutos_cancion = self.data_factory.pyint(0, 60)
+            segundos_cancion = self.data_factory.pyint(0, 60)
+            compositor_cancion = self.data_factory.name()
+            self.coleccion.agregar_cancion(titulo_cancion, minutos_cancion, segundos_cancion, compositor_cancion, -1,
                                            [{'id': 'n', 'nombre': 'Jorge Velosa',
-                                             'texto_curiosidades': 'Su canción fue escogida como...'}])
+                                             'texto_curiosidades': texto_curiosidades}])
         consulta2 = self.coleccion.buscar_canciones_por_interprete("Jorge")
         self.assertEqual(len(consulta2), 2)
