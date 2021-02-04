@@ -65,3 +65,7 @@ class CancionTestCase(unittest.TestCase):
         self.coleccion.eliminar_cancion(1)
         consulta = self.session.query(Cancion).filter(Cancion.id == 1).first()
         self.assertIsNone(consulta)
+
+    def test_cancion_sin_interpretes(self):
+        cancion = self.coleccion.agregar_cancion("Felicidad", 3, 10, "Desconocido", -1, [])
+        self.assertEqual(cancion, False)
