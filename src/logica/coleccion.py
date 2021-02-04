@@ -131,7 +131,17 @@ class Coleccion():
             return False
 
     def agregar_interprete(self, nombre, texto_curiosidades, cancion_id):
-        return None
+        busqueda = session.query(Interprete).filter(Interprete.nombre == nombre).all()
+        if len(busqueda) == 0:
+            if cancion_id > 0:
+                nuevoInterprete = Interprete(nombre=nombre, texto_curiosidades=texto_curiosidades, cancion=cancion_id)
+            else:
+                nuevoInterprete = Interprete(nombre=nombre, texto_curiosidades=texto_curiosidades)
+            session.add(nuevoInterprete)
+            session.commit()
+            return True
+        else:
+            return False
 
     def editar_interprete(self, interprete_id, nombre, texto_curiosidades):
         return None
