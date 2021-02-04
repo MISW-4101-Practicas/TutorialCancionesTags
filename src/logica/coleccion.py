@@ -59,7 +59,7 @@ class Coleccion():
         return interpretes
 
     def dar_album_por_id(self, album_id):
-        return None
+        return session.query(Album).get(album_id).__dict__
 
     def buscar_albumes_por_titulo(self, album_titulo):
         return None

@@ -35,3 +35,9 @@ class AlbumTestCase(unittest.TestCase):
         self.coleccion.agregar_album("New life", 2018, "Album escrito para...", "CD")
         consulta2 = self.coleccion.dar_albumes()
         self.assertGreaterEqual(len(consulta2), len(consulta1))
+
+    def test_dar_album_por_id(self):
+        self.coleccion.agregar_album("Infinito arcoiris", 1990, "Sin descripción", "CASETE")
+        album_id = self.session.query(Album).filter(Album.titulo == "Infinito arcoiris").first().id
+        consulta = self.coleccion.dar_album_por_id(album_id)["titulo"]
+        self.assertEqual(consulta, "Infinito arcoiris")
