@@ -45,7 +45,18 @@ class Coleccion():
             return False
 
     def dar_albumes(self):
-        return None
+        albumes = [elem.__dict__ for elem in session.query(Album).all()]
+        for album in albumes:
+            album["interpretes"] = self.dar_interpretes_de_album(album["id"])
+        return albumes
+
+    def dar_interpretes_de_album(self, album_id):
+        canciones = session.query(Cancion).filter(Cancion.albumes.any(Album.id.in_([album_id]))).all()
+        interpretes = []
+        for cancion in canciones:
+            for interprete in cancion.interpretes:
+                interpretes.append(interprete.nombre)
+        return interpretes
 
     def dar_album_por_id(self, album_id):
         return None

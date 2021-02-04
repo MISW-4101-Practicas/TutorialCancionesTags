@@ -29,3 +29,9 @@ class AlbumTestCase(unittest.TestCase):
         self.coleccion.eliminar_album(1)
         consulta = self.session.query(Album).filter(Album.id == 1).first()
         self.assertIsNone(consulta)
+
+    def test_dar_albumes(self):
+        consulta1 = self.coleccion.dar_albumes()
+        self.coleccion.agregar_album("New life", 2018, "Album escrito para...", "CD")
+        consulta2 = self.coleccion.dar_albumes()
+        self.assertGreaterEqual(len(consulta2), len(consulta1))
