@@ -1,3 +1,4 @@
+from src.modelo.album import Album
 from src.modelo.cancion import Cancion
 from src.modelo.declarative_base import engine, Base, session
 from src.modelo.interprete import Interprete
@@ -48,7 +49,20 @@ class Coleccion():
             return False
 
     def eliminar_cancion(self, cancion_id):
-        return None
+        try:
+            cancion = session.query(Cancion).filter(Cancion.id == cancion_id).first()
+            if cancion is not None:
+                session.delete(cancion)
+                session.commit()
+                return True
+            else:
+                return False
+        except:
+            return False
+
+    def dar_canciones(self):
+        canciones = [elem.__dict__ for elem in session.query(Cancion).all()]
+        return canciones
 
     def dar_cancion_por_id(self, cancion_id):
         cancion = session.query(Cancion).filter_by(id=cancion_id).first()
@@ -66,6 +80,16 @@ class Coleccion():
         canciones = [elem.__dict__ for elem in
                      session.query(Cancion).filter(Cancion.titulo.ilike('%{0}%'.format(cancion_titulo))).all()]
         return canciones
+
+    def asociar_cancion(self, cancion_id, album_id):
+        cancion = session.query(Cancion).filter(Cancion.id == cancion_id).first()
+        album = session.query(Album).filter(Album.id == album_id).first()
+        if cancion is not None and album is not None:
+            album.canciones.append(cancion)
+            session.commit()
+            return True
+        else:
+            return False
 
     def agregar_interprete(self, nombre, texto_curiosidades, cancion_id):
         return None

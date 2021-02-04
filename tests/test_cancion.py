@@ -60,3 +60,8 @@ class CancionTestCase(unittest.TestCase):
                                             'texto_curiosidades': 'Publicado por la compañía discográfica Sire Records'}])
             consulta = self.session.query(Cancion).filter(Cancion.compositor == "Patrick Leonard y otros").first()
             self.assertIsNotNone(consulta)
+
+    def test_eliminar_cancion(self):
+        self.coleccion.eliminar_cancion(1)
+        consulta = self.session.query(Cancion).filter(Cancion.id == 1).first()
+        self.assertIsNone(consulta)
