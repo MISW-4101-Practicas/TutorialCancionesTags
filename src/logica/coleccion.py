@@ -36,7 +36,13 @@ class Coleccion():
             return False
 
     def eliminar_album(self, album_id):
-        return None
+        try:
+            album = session.query(Album).filter(Album.id == album_id).first()
+            session.delete(album)
+            session.commit()
+            return True
+        except:
+            return False
 
     def dar_albumes(self):
         return None
