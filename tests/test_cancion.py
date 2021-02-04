@@ -79,3 +79,13 @@ class CancionTestCase(unittest.TestCase):
                                          'texto_curiosidades': 'En honor al aniversario...'}])
         consulta = self.session.query(Cancion).filter(Cancion.titulo == "Felicidad").first()
         self.assertIsNotNone(consulta)
+
+    def test_cancion_con_album(self):
+        self.coleccion.agregar_album("Renacer", 2005, "Sin descripción", "CD")
+        consulta1 = self.session.query(Album).filter(Album.titulo == "Renacer").first().id
+        self.coleccion.agregar_interprete("Alejandra Guzman", "Canción dedicada a su ...", -1)
+        self.coleccion.agregar_cancion("Bye mamá", 1, 48, "Desconocido", consulta1,
+                                       [{'nombre': 'Alejandra Guzman',
+                                         'texto_curiosidades': 'Canción dedicada a su ...'}])
+        consulta2 = self.session.query(Cancion).filter(Cancion.titulo == "Bye mamá").first()
+        self.assertNotEqual(len(consulta2.albumes), 0)
