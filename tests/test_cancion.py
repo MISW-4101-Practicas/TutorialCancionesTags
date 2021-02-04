@@ -69,3 +69,13 @@ class CancionTestCase(unittest.TestCase):
     def test_cancion_sin_interpretes(self):
         cancion = self.coleccion.agregar_cancion("Felicidad", 3, 10, "Desconocido", -1, [])
         self.assertEqual(cancion, False)
+
+    def test_cancion_varios_interpretes(self):
+        self.coleccion.agregar_interprete("Vicente Fernandez", "Grabado en 3 potrillos", -1)
+        self.coleccion.agregar_interprete("Alejandro Fernandez", "En honor al aniversario...", -1)
+        self.coleccion.agregar_cancion("Felicidad", 4, 37, "Desconocido", -1,
+                                       [{'nombre': 'Vicente Fernandez', 'texto_curiosidades': 'Grabado en 3 potrillos'},
+                                        {'nombre': 'Alejandro Fernandez',
+                                         'texto_curiosidades': 'En honor al aniversario...'}])
+        consulta = self.session.query(Cancion).filter(Cancion.titulo == "Felicidad").first()
+        self.assertIsNotNone(consulta)
