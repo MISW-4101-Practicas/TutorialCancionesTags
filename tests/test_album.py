@@ -19,3 +19,8 @@ class AlbumTestCase(unittest.TestCase):
         consulta2 = self.session.query(Album).filter(Album.id == 2).first()
         self.assertEqual(consulta1.titulo, "Mio")
         self.assertIsNotNone(consulta2)
+
+    def test_editar_album(self):
+        self.coleccion.editar_album(2, "Clara luna-Mix", 1982, "Sin descripción", "DISCO")
+        consulta = self.session.query(Album).filter(Album.id == 2).first()
+        self.assertIsNot(consulta.titulo, "Live Killers")
