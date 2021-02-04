@@ -1,4 +1,4 @@
-from src.modelo.album import Album
+from src.modelo.album import Album, Medio
 from src.modelo.cancion import Cancion
 from src.modelo.declarative_base import engine, Base, session
 from src.modelo.interprete import Interprete
@@ -10,7 +10,17 @@ class Coleccion():
         Base.metadata.create_all(engine)
 
     def agregar_album(self, titulo, anio, descripcion, medio):
-        return None
+        busqueda = session.query(Album).filter(Album.titulo == titulo).all()
+        if len(busqueda) == 0:
+            album = Album(titulo=titulo, ano=anio, descripcion=descripcion, medio=medio)
+            session.add(album)
+            session.commit()
+            return True
+        else:
+            return False
+
+    def dar_medios(self):
+        return [medio.name for medio in Medio]
 
     def editar_album(self, album_id, titulo, anio, descripcion, medio):
         return None
