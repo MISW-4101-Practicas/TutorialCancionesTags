@@ -89,3 +89,16 @@ class CancionTestCase(unittest.TestCase):
                                          'texto_curiosidades': 'Canción dedicada a su ...'}])
         consulta2 = self.session.query(Cancion).filter(Cancion.titulo == "Bye mamá").first()
         self.assertNotEqual(len(consulta2.albumes), 0)
+
+    def test_cancion_repetida_album(self):
+        self.coleccion.agregar_album("25", 2015, "Sin descripción", "CD")
+        consulta1 = self.session.query(Album).filter(Album.titulo == "25").first().id
+        self.coleccion.agregar_interprete("Adele", "Premio Grammy a la mejor grabación del año", -1)
+        cancion1 = self.coleccion.agregar_cancion("Hello", 3, 45, "Desconocido", consulta1,
+                                                  [{'nombre': 'Adele',
+                                                    'texto_curiosidades': 'Premio Grammy a la mejor grabación del año'}])
+        self.coleccion.agregar_interprete("Queen", "Premio Grammy a la mejor grabación del año", -1)
+        cancion2 = self.coleccion.agregar_cancion("Hello", 5, 55, "Desconocido", consulta1,
+                                                  [{'nombre': 'Queen',
+                                                    'texto_curiosidades': 'Canción demasiado larga para la época'}])
+        self.assertEqual(cancion2, False)
