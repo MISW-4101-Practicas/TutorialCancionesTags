@@ -66,6 +66,9 @@ class Coleccion():
                    session.query(Album).filter(Album.titulo.ilike('%{0}%'.format(album_titulo))).all()]
         return albumes
 
+    def agregar_cancion(self, titulo, minutos, segundos, compositor, album_id, interpretes):
+        return None
+
     def editar_cancion(self, cancion_id, titulo, minutos, segundos, compositor, interpretes):
         busqueda = session.query(Cancion).filter(Cancion.titulo == titulo, Cancion.id != cancion_id).all()
         if len(busqueda) == 0:
@@ -120,6 +123,9 @@ class Coleccion():
                      session.query(Cancion).filter(Cancion.titulo.ilike('%{0}%'.format(cancion_titulo))).all()]
         return canciones
 
+    def buscar_canciones_por_interprete(self, interprete_nombre):
+        return None
+    
     def asociar_cancion(self, cancion_id, album_id):
         cancion = session.query(Cancion).filter(Cancion.id == cancion_id).first()
         album = session.query(Album).filter(Album.id == album_id).first()
