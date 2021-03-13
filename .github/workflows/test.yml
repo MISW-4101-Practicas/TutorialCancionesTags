@@ -1,4 +1,4 @@
-name: Hola mundo
+name: Pruebas Unitarias
 on:
   push:
     branches: [ main ]
