@@ -3,12 +3,16 @@ on:
   push:
     branches: [ main ]
 jobs:
-  Mi-primer-job:
-    name: Mi primer job
+  job1:
+    name: Pruebas
     runs-on: ubuntu-latest
     steps:
-    - name: Imprimir
-      env:
-        MI_VARIABLE: Hola mundo
-      run: |
-        echo $MI_VARIABLE.
+    - name: Checkout de repositorio
+      uses: actions/checkout@v2
+    - name: Configuración de entorno de python
+      uses: actions/setup-python@v2
+      with:
+          python-version: '3.7'
+    - name: Correr pruebas
+      id: correr-pruebas
+      run: python -m unittest -v tests/PersonaTestCase.py
