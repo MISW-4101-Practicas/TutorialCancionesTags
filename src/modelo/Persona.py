@@ -5,7 +5,7 @@ class Persona:
    def __init__(self, nombre, edad):
        self.__nombre = nombre
        self.__edad = edad
-       numero = 1234
+       numero = 12345
 
     #autor yo ra no
 
