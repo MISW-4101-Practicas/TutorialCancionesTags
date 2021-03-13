@@ -5,7 +5,6 @@ class Persona:
    def __init__(self, nombre, edad):
        self.__nombre = nombre
        self.__edad = edad
-       self.__apellido = nombre
 
     #autor yo ra
 
