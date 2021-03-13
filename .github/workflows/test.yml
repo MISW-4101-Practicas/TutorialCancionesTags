@@ -19,9 +19,9 @@ jobs:
         pip install -r requirements.txt
     - name: Correr pruebas
       id: correr-pruebas
-      run: python -m unittest -v tests/test_persona.py
+      run: python -m unittest -v tests/PersonaTestCase.py
     - name: Calculo de cubrimiento
       id: cubrimiento
       run: |
-          coverage run -m unittest tests/test_persona.py
+          coverage run -m unittest tests/PersonaTestCase.py
           coverage report -m
