@@ -6,6 +6,8 @@ class Persona:
        self.__nombre = nombre
        self.__edad = edad
 
+    #autor yo
+
 
    def asignar_edad(self, edad):
        self.__edad = edad
