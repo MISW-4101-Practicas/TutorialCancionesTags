@@ -5,8 +5,9 @@ class Persona:
    def __init__(self, nombre, edad):
        self.__nombre = nombre
        self.__edad = edad
+       numero = 12
 
-    #autor yo ra
+    #autor yo ra no
 
 
    def asignar_edad(self, edad):
