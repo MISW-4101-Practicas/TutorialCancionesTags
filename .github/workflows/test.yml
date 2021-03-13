@@ -3,10 +3,17 @@ on:
   push:
     branches: [ main ]
 jobs:
+  Mi-primer-job:
+    name: verficapersona
   job1:
     name: Pruebas
     runs-on: ubuntu-latest
     steps:
+    - name: Imprimir
+      env:
+        MI_VARIABLE: Hola mundo
+      run: |
+        echo $MI_VARIABLE.
     - name: Checkout de repositorio
       uses: actions/checkout@v2
     - name: Configuración de entorno de python
@@ -18,8 +25,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Correr pruebas
-        id: correr-pruebas
-        run: python -m unittest -v tests/PersonaTestCase.py
+      id: correr-pruebas
+      run: python -m unittest -v tests/PersonaTestCase.py
     - name: Cálculo de cubrimiento
       id: cubrimiento
       run: |
