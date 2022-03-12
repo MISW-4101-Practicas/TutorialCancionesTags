@@ -9,6 +9,6 @@ if __name__ == '__main__':
     session.close()
     
     coleccion = Coleccion()
-
+    print("Test Change")
     app = ic.App(sys.argv, coleccion)
     sys.exit(app.exec_())
