@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QApplication, QMessageBox
-from src.vista.vista_album import Ventana_Album
-from src.vista.vista_busqueda import Ventana_Inicial
-from src.vista.vista_cancion import Ventana_Cancion
-from src.vista.vista_lista_album import Ventana_Lista_Album
-from src.vista.vista_lista_cancion import Ventana_Lista_Canciones
+from vista.vista_album import Ventana_Album
+from vista.vista_busqueda import Ventana_Inicial
+from vista.vista_cancion import Ventana_Cancion
+from vista.vista_lista_album import Ventana_Lista_Album
+from vista.vista_lista_cancion import Ventana_Lista_Canciones
 
 
 class App(QApplication):
