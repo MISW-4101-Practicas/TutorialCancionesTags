@@ -2,11 +2,11 @@ import unittest
 
 from faker import Faker
 
-from src.logica.coleccion import Coleccion
-from src.modelo.album import Album
-from src.modelo.cancion import Cancion
-from src.modelo.declarative_base import Session
-from src.modelo.interprete import Interprete
+from logica.coleccion import Coleccion
+from modelo.album import Album
+from modelo.cancion import Cancion
+from modelo.declarative_base import Session
+from modelo.interprete import Interprete
 
 
 class CancionTestCase(unittest.TestCase):
