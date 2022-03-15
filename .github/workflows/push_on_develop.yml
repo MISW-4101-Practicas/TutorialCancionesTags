@@ -34,7 +34,9 @@ jobs:
         with:
           branch: "release"
       - name: Checkout a rama release
-        run: checkout release
+        - uses: actions/checkout@v3
+        with:
+          ref: my-branch
   job3:
     name: Mezclar ${{ github.ref_name }} -> main
     runs-on: ubuntu-latest
