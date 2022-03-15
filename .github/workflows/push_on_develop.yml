@@ -4,7 +4,7 @@ on:
     branches: [desarrollo]
 jobs:
   job1:
-    name: Pruebas
+    name: Pruebas Unitarias
     runs-on: ubuntu-latest
     outputs:
       salida: ${{ steps.imprimir.outputs.respuesta }}
@@ -22,3 +22,4 @@ jobs:
       - name: Correr pruebas
         id: correr-pruebas
         run: python -m unittest discover -s tests -v
+    job2:
