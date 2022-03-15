@@ -4,7 +4,7 @@ on:
     branches: "**Features"
 jobs:
   job1:
-    name: Pruebas
+    name: Pruebas Unitarias
     runs-on: ubuntu-latest
     outputs:
       salida: ${{ steps.imprimir.outputs.respuesta }}
@@ -23,7 +23,7 @@ jobs:
         id: correr-pruebas
         run: python -m unittest discover -s tests -v
   job2:
-    name: "Merge desarrollo con ramaFeature"
+    name: Mezclar desarrollo -> ramaFeature"
     runs-on: ubuntu-latest
     needs: job1
     steps:
@@ -34,7 +34,7 @@ jobs:
           source-branch: desarrollo
           target-branch: ${{ github.ref }}
   job3:
-    name: "Merge ramaFeature con desarrollo"
+    name: Mezclar ramaFeature -> desarrollo
     runs-on: ubuntu-latest
     needs: job2
     steps:
