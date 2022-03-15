@@ -33,7 +33,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: "release"
-        run: checkout release
+        - name: Checkout a rama release
+          run: checkout release
   job3:
     name: Mezclar ${{ github.ref_name }} -> main
     runs-on: ubuntu-latest
