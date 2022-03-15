@@ -9,8 +9,8 @@ jobs:
     outputs:
       salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
-      if: ${{ contains(github.event.head_commit.message, 'merge') }}
-      - name: Checkout de repositorio
+      - if: ${{ contains(github.event.head_commit.message, 'merge') }}
+      name: Checkout de repositorio
         uses: actions/checkout@v2
       - name: Configuración de entorno de python
         uses: actions/setup-python@v2
