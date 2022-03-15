@@ -34,7 +34,7 @@ jobs:
           source-branch: desarrollo
           target-branch: ${{ github.ref }}
   job3:
-    name: Mezclar ${{ (github.ref).replace('refs/heads/', '')) }} -> desarrollo
+    name: Mezclar ${{ ${GITHUB_REF#refs/heads/}}} -> desarrollo
     runs-on: ubuntu-latest
     needs: job2
     steps:
