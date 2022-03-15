@@ -28,9 +28,12 @@ jobs:
     needs: job1
     steps:
       - name: Crear release
-        run: |
-          git checkout -b release
-          git push -f -u origin release
+        uses: peterjgrainger/action-create-branch@v2.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: "release"
+        run: checkout release
   job3:
     name: Mezclar ${{ github.ref_name }} -> main
     runs-on: ubuntu-latest
