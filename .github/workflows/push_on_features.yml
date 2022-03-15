@@ -34,7 +34,7 @@ jobs:
           source-branch: desarrollo
           target-branch: ${{ github.ref }}
   job3:
-    name: Mezclar ${GITHUB_REF##*/} -> desarrollo
+    name: Mezclar ${{ github.ref_name }} -> desarrollo
     runs-on: ubuntu-latest
     needs: job2
     steps:
