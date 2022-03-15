@@ -27,7 +27,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: job1
     stepts:
-      -name: Merge con desarrollo
       - name: Mezcla desarrollo -> ramaFeature
         uses: tukasz/direct-merge-action@master
         with:
