@@ -29,8 +29,8 @@ jobs:
     steps:
       - name: Crear release
         run: |
-        git checkout -b release
-        git push -f -u origin release
+          git checkout -b release
+          git push -f -u origin release
   job3:
     name: Mezclar ${{ github.ref_name }} -> main
     runs-on: ubuntu-latest
