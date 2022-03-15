@@ -1,7 +1,7 @@
 name: Merge release
 on:
   push:
-    branches: "**Features"
+    branches: [desarrollo]
 jobs:
   job1:
     name: Pruebas
