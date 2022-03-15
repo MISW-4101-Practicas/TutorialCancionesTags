@@ -23,7 +23,7 @@ jobs:
         id: correr-pruebas
         run: python -m unittest discover -s tests -v
   job2:
-    name: Mezclar desarrollo -> ${{ github.ref }}
+    name: Mezclar desarrollo -> ${{ github.ref_name }}
     runs-on: ubuntu-latest
     needs: job1
     steps:
