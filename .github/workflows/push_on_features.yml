@@ -1,0 +1,48 @@
+name: Pruebas unitarias1
+on:
+  push:
+    branches: "**Features"
+jobs:
+  job1:
+    name: Pruebas
+    runs-on: ubuntu-latest
+    outputs:
+      salida: ${{ steps.imprimir.outputs.respuesta }}
+    steps:
+      - name: Checkout de repositorio
+        uses: actions/checkout@v2
+      - name: Configuración de entorno de python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+      - name: Instalación de librerías y dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Correr pruebas
+        id: correr-pruebas
+        run: python -m unittest discover -s tests -v
+  job2:
+    name: "Merge desarrollo con ramaFeature"
+    runs-on: ubuntu-latest
+    needs: job1
+    stepts:
+      -name: Merge con desarrollo
+      - name: Mezcla desarrollo -> ramaFeature
+        uses: tukasz/direct-merge-action@master
+        with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        source-branch: desarrollo
+        target-branch: ${{ github.ref }}
+  job3:
+    name: "Merge ramaFeature con desarrollo"
+    runs-on: ubuntu-latest
+    needs: job2
+    stepts:
+      -name: Merge con desarrollo
+      - name: Mezcla desarrollo -> ramaFeature
+        uses: tukasz/direct-merge-action@master
+        with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        source-branch: ${{ github.ref }}
+        target-branch: desarrollo
