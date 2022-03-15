@@ -5,12 +5,12 @@ on:
 jobs:
   job1:
     name: Pruebas Unitarias
-    if: ${{ contains(github.event.head_commit.message, 'merge') }}
     runs-on: ubuntu-latest
     outputs:
       salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
-      - name: Checkout de repositorio
+      - if: ${{ contains(github.event.head_commit.message, 'merge') }}
+        name: Checkout de repositorio
         uses: actions/checkout@v2
       - name: Configuración de entorno de python
         uses: actions/setup-python@v2
