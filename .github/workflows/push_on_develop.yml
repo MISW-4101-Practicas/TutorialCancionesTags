@@ -20,18 +20,17 @@ jobs:
           ref: release
       - name: Print rama
         run: echo "${GITHUB_REF#refs/heads/}"
-
   job2:
     name: Mezclar main -> release
-      runs-on: ubuntu-latest
-      needs: job1
-      steps:
-        - name: Mezcla desarrollo -> ramaFeature
-          uses: tukasz/direct-merge-action@master
-          with:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            source-branch: main
-            target-branch: release
+    runs-on: ubuntu-latest
+    needs: job1
+    steps:
+      - name: Mezcla desarrollo -> ramaFeature
+        uses: tukasz/direct-merge-action@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          source-branch: main
+          target-branch: release
   job3:
     name: Pruebas Unitarias
     runs-on: ubuntu-latest
