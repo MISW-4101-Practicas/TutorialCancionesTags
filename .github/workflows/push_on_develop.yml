@@ -19,10 +19,22 @@ jobs:
           ref: release
       - name: Print rama
         run: echo "${GITHUB_REF#refs/heads/}"
+
   job2:
+    name: Mezclar desarrollo -> ${{ github.ref_name }}
+      runs-on: ubuntu-latest
+      needs: job1
+      steps:
+        - name: Mezcla desarrollo -> ramaFeature
+          uses: tukasz/direct-merge-action@master
+          with:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            source-branch: desarrollo
+            target-branch: ${{ github.ref }}
+  job3:
     name: Pruebas Unitarias
     runs-on: ubuntu-latest
-    needs: job1
+    needs: job2
     outputs:
       salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
@@ -44,10 +56,10 @@ jobs:
         run: |
           coverage run -m unittest discover -s tests -v
           coverage report -m
-  job3:
+  job4:
     name: Mezclar ${{ github.ref_name }} -> main
     runs-on: ubuntu-latest
-    needs: job2
+    needs: job3
     steps:
       - name: Mezcla desarrollo -> ramaFeature
         uses: tukasz/direct-merge-action@master
