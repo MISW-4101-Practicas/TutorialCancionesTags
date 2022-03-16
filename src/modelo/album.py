@@ -12,7 +12,7 @@ class Medio(enum.Enum):
     CD = 3
 
 #
-# s
+# sw
 
 
 class Album(Base):
