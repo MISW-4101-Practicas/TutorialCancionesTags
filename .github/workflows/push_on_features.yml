@@ -4,12 +4,27 @@ on:
     branches: "**Features"
 jobs:
   job1:
+      name: Mezclar desarrollo -> ${{ github.ref_name }}
+      runs-on: ubuntu-latest
+      steps:
+        - name: Actualizar rama con desarrollo
+          uses: actions/checkout@v3
+          with:
+            ref: ${{ github.ref }}
+        - name: Mezcla desarrollo -> ramaFeature
+          uses: tukasz/direct-merge-action@master
+          with:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            source-branch: desarrollo
+            target-branch: ${{ github.ref }}
+  job2:
     name: Pruebas Unitarias
+    if: ${{ contains(github.event.head_commit.message, 'terminada') }}
     runs-on: ubuntu-latest
+    needs: job1
     outputs:
       salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
-      - if: ${{ contains(github.event.head_commit.message, 'terminada') }}
         name: Checkout de repositorio
         uses: actions/checkout@v2
       - name: Configuración de entorno de python
@@ -35,17 +50,6 @@ jobs:
         run: |
           coverage run -m unittest discover -s tests -v
           coverage report -m
-  job2:
-    name: Mezclar desarrollo -> ${{ github.ref_name }}
-    runs-on: ubuntu-latest
-    needs: job1
-    steps:
-      - name: Mezcla desarrollo -> ramaFeature
-        uses: tukasz/direct-merge-action@master
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          source-branch: desarrollo
-          target-branch: ${{ github.ref }}
   job3:
     name: Mezclar ${{ github.ref_name }} -> desarrollo
     runs-on: ubuntu-latest

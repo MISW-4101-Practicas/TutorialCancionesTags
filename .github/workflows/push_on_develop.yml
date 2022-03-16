@@ -5,9 +5,9 @@ on:
 jobs:
   job1:
     name: Crear rama release
+    if: ${{ contains(github.event.head_commit.message, 'release') }}
     runs-on: ubuntu-latest
     steps:
-      - if: ${{ contains(github.event.head_commit.message, 'release') }}
         name: Crear release
         uses: peterjgrainger/action-create-branch@v2.0.1
         env:
