@@ -39,6 +39,11 @@ jobs:
       - name: Correr pruebas
         id: correr-pruebas
         run: python -m unittest discover -s tests -v
+      - name: Cálculo de cubrimiento
+        id: cubrimiento
+        run: |
+          coverage run -m unittest tests/test_persona.py
+          coverage report -m
   job3:
     name: Mezclar ${{ github.ref_name }} -> main
     runs-on: ubuntu-latest
