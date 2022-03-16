@@ -1,12 +1,41 @@
-name: Pruebas unitarias1
+name: Merge release
 on:
   push:
-    branches: "**Features"
+    branches: [desarrollo]
 jobs:
-  job1:
-    name: Pruebas Unitarias
-    if: ${{ contains(github.event.head_commit.message, 'terminada') }}
+  job1
+    name: Crear rama release
+    if: ${{ contains(github.event.head_commit.message, 'release') }}
     runs-on: ubuntu-latest
+    if: ${{ contains(github.event.head_commit.message, 'release') }}
+    steps:
+      - name: Crear release
+        uses: peterjgrainger/action-create-branch@v2.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: release
+      - name: Checkout a rama release
+        uses: actions/checkout@v3
+        with:
+          ref: release
+      - name: Print rama
+        run: echo "${GITHUB_REF#refs/heads/}"
+  job2:
+    name: Mezclar main -> release
+    runs-on: ubuntu-latest
+    needs: job1
+    steps:
+      - name: Mezcla desarrollo -> ramaFeature
+        uses: tukasz/direct-merge-action@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          source-branch: main
+          target-branch: release
+  job3:
+    name: Pruebas Unitarias
+    runs-on: ubuntu-latest
+    needs: job2
     outputs:
       salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
@@ -38,25 +67,14 @@ jobs:
         run: |
           coverage run -m unittest discover -s tests -v
           coverage report -m
-  job2:
-    name: Mezclar desarrollo -> ${{ github.ref_name }}
+  job4:
+    name: Mezclar release -> main
     runs-on: ubuntu-latest
-    needs: job1
+    needs: job3
     steps:
-      - name: Mezcla desarrollo -> ramaFeature
+      - name: Mezcla release -> main
         uses: tukasz/direct-merge-action@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          source-branch: desarrollo
-          target-branch: ${{ github.ref }}
-  job3:
-    name: Mezclar ${{ github.ref_name }} -> desarrollo
-    runs-on: ubuntu-latest
-    needs: job2
-    steps:
-      - name: Mezcla desarrollo -> ramaFeature
-        uses: tukasz/direct-merge-action@master
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          source-branch: ${{ github.ref }}
-          target-branch: desarrollo
+          source-branch: release
+          target-branch: main

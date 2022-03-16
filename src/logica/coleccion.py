@@ -172,6 +172,7 @@ class Coleccion():
             canciones = session.query(Cancion).filter(
                 Cancion.interpretes.any(Interprete.nombre.ilike('%{0}%'.format(interprete_nombre)))).all()
         return canciones
+#
 
     def asociar_cancion(self, cancion_id, album_id):
         cancion = session.query(Cancion).filter(
@@ -228,13 +229,13 @@ class Coleccion():
         interpretes = [
             elem.__dict__ for elem in session.query(Interprete).all()]
         return interpretes
-#
+# sd
 
     def buscar_interpretes_por_nombre(self, interprete_nombre):
         interpretes = [elem.__dict__ for elem in session.query(Interprete).filter(
             Interprete.nombre.ilike('%{0}%'.format(interprete_nombre))).all()]
         return interpretes
-#
+# @##ds
 
     def test(self):
         pass
