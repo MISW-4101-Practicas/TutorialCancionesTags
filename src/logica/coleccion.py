@@ -172,6 +172,7 @@ class Coleccion():
             canciones = session.query(Cancion).filter(
                 Cancion.interpretes.any(Interprete.nombre.ilike('%{0}%'.format(interprete_nombre)))).all()
         return canciones
+#
 
     def asociar_cancion(self, cancion_id, album_id):
         cancion = session.query(Cancion).filter(
