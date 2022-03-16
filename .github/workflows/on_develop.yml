@@ -3,7 +3,7 @@ on:
   push:
     branches: [desarrollo]
 jobs:
-  job1:
+  job1
     name: Crear rama release
     if: ${{ contains(github.event.head_commit.message, 'release') }}
     runs-on: ubuntu-latest
