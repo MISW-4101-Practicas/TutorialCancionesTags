@@ -15,6 +15,7 @@ class Medio(enum.Enum):
 #
 #
 #
+#
 
 
 class Album(Base):
