@@ -18,7 +18,7 @@ jobs:
         with:
           ref: release
       - name: Print rama
-        run: echo "::set-output name=respuesta::${github.ref_name}"
+        run: echo ${github.ref_name}"
   job2:
     name: Pruebas Unitarias
     runs-on: ubuntu-latest
