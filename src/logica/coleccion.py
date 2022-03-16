@@ -183,6 +183,7 @@ class Coleccion():
             return True
         else:
             return False
+#
 
     def agregar_interprete(self, nombre, texto_curiosidades, cancion_id):
         busqueda = session.query(Interprete).filter(
