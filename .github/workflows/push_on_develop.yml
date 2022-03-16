@@ -4,8 +4,24 @@ on:
     branches: [desarrollo]
 jobs:
   job1:
+    name: Crear rama release
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ github.ref_name != 'release' }}
+        name: Crear release
+        uses: peterjgrainger/action-create-branch@v2.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: "release"
+      - name: Checkout a rama release
+        uses: actions/checkout@v3
+        with:
+          ref: release
+  job2:
     name: Pruebas Unitarias
     runs-on: ubuntu-latest
+    needs: job1
     outputs:
       salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
@@ -22,22 +38,6 @@ jobs:
       - name: Correr pruebas
         id: correr-pruebas
         run: python -m unittest discover -s tests -v
-  job2:
-    name: Crear rama release
-    runs-on: ubuntu-latest
-    needs: job1
-    steps:
-      - if: ${{ github.ref_name != 'release' }}
-        name: Crear release
-        uses: peterjgrainger/action-create-branch@v2.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          branch: "release"
-      - name: Checkout a rama release
-        uses: actions/checkout@v3
-        with:
-          ref: release
   job3:
     name: Mezclar ${{ github.ref_name }} -> main
     runs-on: ubuntu-latest
