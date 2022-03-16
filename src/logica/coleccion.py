@@ -229,7 +229,7 @@ class Coleccion():
         interpretes = [
             elem.__dict__ for elem in session.query(Interprete).all()]
         return interpretes
-#
+# sd
 
     def buscar_interpretes_por_nombre(self, interprete_nombre):
         interpretes = [elem.__dict__ for elem in session.query(Interprete).filter(
