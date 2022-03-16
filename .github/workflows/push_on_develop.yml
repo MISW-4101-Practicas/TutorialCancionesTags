@@ -35,7 +35,7 @@ jobs:
         with:
           branch: "release"
       - name: Checkout a rama release
-        - uses: actions/checkout@v3
+        uses: actions/checkout@v3
         with:
           ref: release
   job3:
