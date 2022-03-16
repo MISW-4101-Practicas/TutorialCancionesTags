@@ -42,7 +42,7 @@ jobs:
       - name: Cálculo de cubrimiento
         id: cubrimiento
         run: |
-          coverage run -m unittest tests/test_persona.py
+          coverage run -m unittest discover -s tests -v
           coverage report -m
   job3:
     name: Mezclar ${{ github.ref_name }} -> main
