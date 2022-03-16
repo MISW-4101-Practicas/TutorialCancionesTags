@@ -27,8 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: job1
     steps:
-      - if: ${{ github.ref_name != 'release' }}
-        name: Crear release
+        - name: Crear release
         uses: peterjgrainger/action-create-branch@v2.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
