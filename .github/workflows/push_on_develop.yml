@@ -12,7 +12,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: "release"
+          branch: release
       - name: Checkout a rama release
         uses: actions/checkout@v3
         with:
