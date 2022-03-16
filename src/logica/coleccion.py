@@ -235,7 +235,7 @@ class Coleccion():
         interpretes = [elem.__dict__ for elem in session.query(Interprete).filter(
             Interprete.nombre.ilike('%{0}%'.format(interprete_nombre))).all()]
         return interpretes
-# @##dsds
+# @##dsdsdsds
 
     def test(self):
         pass
