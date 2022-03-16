@@ -21,7 +21,7 @@ jobs:
   job2:
     name: Pruebas Unitarias
     runs-on: ubuntu-latest
-    needs: job2
+    needs: job1
     outputs:
       salida: ${{ steps.imprimir.outputs.respuesta }}
     steps:
