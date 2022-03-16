@@ -5,6 +5,7 @@ on:
 jobs:
   job1:
     name: Mezclar desarrollo -> ${{ github.ref_name }}
+    if: ${{ contains(github.event.head_commit.message, 'terminada') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout a rama release
@@ -19,7 +20,6 @@ jobs:
           target-branch: ${{ github.ref }}
   job2:
     name: Pruebas Unitarias
-    if: ${{ contains(github.event.head_commit.message, 'terminada') }}
     runs-on: ubuntu-latest
     outputs:
       salida: ${{ steps.imprimir.outputs.respuesta }}
