@@ -7,7 +7,6 @@ jobs:
     name: Crear rama release
     if: ${{ contains(github.event.head_commit.message, 'release') }}
     runs-on: ubuntu-latest
-    if: ${{ contains(github.event.head_commit.message, 'release') }}
     steps:
       - name: Crear release
         uses: peterjgrainger/action-create-branch@v2.0.1
