@@ -7,8 +7,7 @@ jobs:
     name: Crear rama release
     runs-on: ubuntu-latest
     steps:
-      - if: ${{ github.ref_name != 'release' }}
-        name: Crear release
+      - name: Crear release
         uses: peterjgrainger/action-create-branch@v2.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
