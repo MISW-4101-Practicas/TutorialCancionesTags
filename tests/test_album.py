@@ -69,3 +69,11 @@ class AlbumTestCase(unittest.TestCase):
         self.coleccion.agregar_album("Clara luna-Instrumental", anio_album, descripcion_album, "CD")
         consulta2 = self.coleccion.buscar_albumes_por_titulo("clara luna")
         self.assertLessEqual(len(consulta1), len(consulta2))
+
+    def test_buscar_albumes_por_titulo2(self):
+        consulta1 = self.coleccion.buscar_albumes_por_titulo("clara luna")
+        anio_album = self.data_factory.year()
+        descripcion_album = self.data_factory.sentence()
+        self.coleccion.agregar_album("Clara luna-Instrumental", anio_album, descripcion_album, "CD")
+        consulta2 = self.coleccion.buscar_albumes_por_titulo("clara luna")
+        self.assertLessEqual(len(consulta1), len(consulta2))
