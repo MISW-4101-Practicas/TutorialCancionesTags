@@ -1,0 +1,66 @@
+name: AutoMerge
+on:
+  pull_request:
+    types:
+      - ready_for_review
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge-me:
+    name: Realiza merge hacia develop
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout de repositorio
+        uses: actions/checkout@v2
+
+      - name: Obtiene el nombre de la rama actual
+        id: branch_name
+        run: echo "Branch name is ${{ env.GITHUB_REF }}" 
+
+      - name: Extrae el nombre de la rama actual
+        id: extract_branch
+        run: echo "Extracted branch name is ${{ steps.branch_name.outputs.GITHUB_REF }}"
+
+      - name: Verificar aprobación de la revisión
+        id: check_approval
+        run: |
+          approval_status=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews?per_page=100" | \
+            jq 'any(.[] | select(.state == "APPROVED"))')
+          if [ "$approval_status" == "true" ]; then
+            echo "El pull request ha sido aprobado"
+          else
+            echo "El pull-request no se ha aprobado. Exiting..."
+            exit 1
+          fi
+
+      - name: Configuración de entorno de python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+
+      - name: Instalación de librerías y dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Correr pruebas
+        id: correr-pruebas
+        run: python -m unittest discover -s tests -v
+
+      - name: Cálculo de cubrimiento
+        id: cubrimiento
+        run: |
+          coverage run -m unittest discover -s tests -v
+          coverage report -m
+
+      - name: Mezcla feature -> develop
+        if: success()       
+        uses: tukasz/direct-merge-action@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          source-branch: ${{ steps.extract_branch.outputs.branch_name }}
+          target-branch: develop
