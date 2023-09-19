@@ -9,13 +9,10 @@ permissions:
   pull-requests: write
 
 jobs:
-  automerge-me:
-    name: Realiza merge hacia develop
+  check_approved_pr:
+    name: Chequear Pull Request
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout de repositorio
-        uses: actions/checkout@v2
-
       - name: Obtiene el nombre de la rama actual
         id: branch_name
         run: echo "Branch name is ${{ env.GITHUB_REF }}" 
@@ -36,7 +33,13 @@ jobs:
             echo "El pull-request no se ha aprobado. Exiting..."
             exit 1
           fi
-
+  install_dependencies:
+    name: Instalar dependencias
+    runs-on: ubuntu-latest
+    needs: [check_approved_pr]
+    steps:
+      - name: Checkout de repositorio
+        uses: actions/checkout@v2
       - name: Configuración de entorno de python
         uses: actions/setup-python@v2
         with:
@@ -47,6 +50,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+  run_test_and_coverage:
+    name: Ejecutar pruebas
+    runs-on: ubuntu-latest
+    needs: [install_dependencies]
+    steps:
       - name: Correr pruebas
         id: correr-pruebas
         run: python -m unittest discover -s tests -v
@@ -57,8 +65,12 @@ jobs:
           coverage run -m unittest discover -s tests -v
           coverage report -m
 
+  merge_changes:
+    name: Mezclar cambios a develop
+    runs-on: ubuntu-latest
+    needs: [run_test_and_coverage]
+    steps:      
       - name: Mezcla feature -> develop
-        if: success()       
         uses: tukasz/direct-merge-action@master
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
