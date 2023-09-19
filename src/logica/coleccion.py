@@ -174,6 +174,7 @@ class Coleccion():
             return False
 
     def agregar_interprete(self, nombre, texto_curiosidades, cancion_id):
+        print(nombre)
         busqueda = session.query(Interprete).filter(Interprete.nombre == nombre).all()
         if len(busqueda) == 0:
             if cancion_id > 0:
