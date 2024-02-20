@@ -35,7 +35,7 @@ class AlbumTestCase(unittest.TestCase):
 
     def test_editar_album(self):
         nueva_descripcion_album = self.data_factory.sentence()
-        self.coleccion.editar_album(2, "Clara luna-Mix", 2013, nueva_descripcion_album, "DISCO")
+        self.coleccion.editar_album(2, "Clara luna-Mix1", 2013, nueva_descripcion_album, "DISCO")
         consulta = self.session.query(Album).filter(Album.id == 2).first()
         self.assertIsNot(consulta.titulo, "Live Killers")
 
@@ -69,3 +69,4 @@ class AlbumTestCase(unittest.TestCase):
         self.coleccion.agregar_album("Clara luna-Instrumental", anio_album, descripcion_album, "CD")
         consulta2 = self.coleccion.buscar_albumes_por_titulo("clara luna")
         self.assertLessEqual(len(consulta1), len(consulta2))
+
